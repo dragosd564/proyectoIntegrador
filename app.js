@@ -2,21 +2,23 @@ let nav = document.querySelectorAll('.nav-link');
 
 var numero = [];
 window.addEventListener('DOMContentLoaded', () => {
-    fetch('https://node-temperatura-api.herokuapp.com/temperatura')
-            .then((response) => response.json())
-            .then((data) => {
-                numero = data.body
-                console.log(numero)
-            });
+    cargarDatos();
 })
 
 // const ctx = document.getElementById('myChart').getContext('2d');
 const cuadro1 = document.getElementById('cuadro2').getContext('2d');
 const data = {
     labels: [
-      'Red',
-      'Blue',
-      'Yellow'
+      "nudo",
+      'intencidad' ,
+      'vientoNorte' ,
+      'vientoNordeste',
+      'vientoEste' ,
+      'vientoSureste' ,
+      'vientoSur' ,
+      'vientoSuroeste' ,
+      'vientoOeste' ,
+      'vientoNoroeste' 
     ],
     datasets: [{
       label: 'Direccion del veinto',
@@ -42,6 +44,25 @@ const chart = new Chart(cuadro1,{
         responsive: true
     }
 })
+function cargarDatos (){
+  fetch('https://node-temperatura-api.herokuapp.com/temperatura')
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data.body)
+                const viento = data.body.map(
+                  function(index){
+                    return index.viento_norte;
+                  })
+                const vientosur = data.body.map(
+                    function(index){
+                      return index.viento_sur;
+                    })
+                  numero = [...viento,...vientosur],
+                  console.log(numero)
+                  chart.config.data.datasets[0].data = numero;
+                  chart.update();
+            });
+}
 Array.from(nav).forEach(item => {
     item.addEventListener('click', () => {
        let activeClass = document.querySelector('.active');
