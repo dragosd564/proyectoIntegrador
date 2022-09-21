@@ -45,7 +45,7 @@ const chart = new Chart(cuadro1,{
     }
 })
 function cargarDatos (){
-  fetch('https://node-temperatura-api.herokuapp.com/temperatura')
+  fetch('https://node-temperatura-api.herokuapp.com/viento')
             .then((response) => response.json())
             .then((data) => {
               console.log(data.body)
